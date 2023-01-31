@@ -20,12 +20,8 @@ public class HotelController {
         this.hotelService = hotelService;
     }
     @GetMapping("hotel")
-    public ResponseEntity<List<Hotel>> getHotels() {
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel(1,"Caesars Palace","Las Vegas"));
-        hotels.add(new Hotel(2,"Icehotel Sweden","Jukkasjarv"));
-        hotels.add(new Hotel(3,"The Plaza","New York"));
-        return ResponseEntity.ok(hotels);
+    public ResponseEntity <List<HotelDto>> getHotels() {
+        return new ResponseEntity<>(hotelService.getAllHotel(), HttpStatus.OK);
     }
     @GetMapping("hotel/{id}")
     public Hotel hotelDetail(@PathVariable int id) {
