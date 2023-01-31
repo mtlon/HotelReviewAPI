@@ -24,8 +24,8 @@ public class HotelController {
         return new ResponseEntity<>(hotelService.getAllHotel(), HttpStatus.OK);
     }
     @GetMapping("hotel/{id}")
-    public Hotel hotelDetail(@PathVariable int id) {
-        return new Hotel(id, "Hilton", "Warsaw");
+    public ResponseEntity<HotelDto> hotelDetail(@PathVariable int id) {
+        return ResponseEntity.ok(hotelService.getById(id));
     }
     @PostMapping("hotel/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -33,10 +33,9 @@ public class HotelController {
         return new ResponseEntity<>(hotelService.createHotel(hotelDto), HttpStatus.CREATED);
     }
     @PutMapping("hotel/{id}/update")
-    public ResponseEntity<Hotel> updateHotel(@RequestBody Hotel hotel, @PathVariable("id") int hotelId) {
-        System.out.println(hotel.getName());
-        System.out.println(hotel.getCity());
-        return ResponseEntity.ok(hotel);
+    public ResponseEntity<HotelDto> updateHotel(@RequestBody HotelDto hotelDto, @PathVariable("id") int hotelId) {
+        HotelDto response = hotelService.updateHotel(hotelDto, hotelId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @DeleteMapping("hotel/{id}/delete")
     public ResponseEntity<String> deleteHotel(@PathVariable("id") int hotelId) {
