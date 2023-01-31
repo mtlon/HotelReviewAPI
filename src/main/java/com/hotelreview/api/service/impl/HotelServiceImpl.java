@@ -1,13 +1,13 @@
 package com.hotelreview.api.service.impl;
 
 import com.hotelreview.api.dto.HotelDto;
+import com.hotelreview.api.exceptions.HotelNotFoundException;
 import com.hotelreview.api.models.Hotel;
 import com.hotelreview.api.repository.HotelRepository;
 import com.hotelreview.api.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,13 +32,12 @@ public class HotelServiceImpl implements HotelService {
         hotelResponse.setCity(newHotel.getCity());
         return hotelResponse;
     }
-
     @Override
     public List<HotelDto> getAllHotel() {
         List<Hotel> hotel = hotelRepository.findAll();
+        Hotel hotel89 = hotelRepository.findById(89).orElseThrow(() -> new HotelNotFoundException("Not found by id!"));
         return hotel.stream().map(h -> mapToDto(h)).collect(Collectors.toList());
     }
-
     public HotelDto mapToDto(Hotel hotel) {
         HotelDto hotelDto = new HotelDto();
         hotelDto.setId(hotel.getId());
@@ -52,5 +51,4 @@ public class HotelServiceImpl implements HotelService {
         hotel.setCity(hotelDto.getCity());
         return hotel;
     }
-
 }
