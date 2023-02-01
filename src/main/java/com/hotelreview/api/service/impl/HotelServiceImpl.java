@@ -1,11 +1,15 @@
 package com.hotelreview.api.service.impl;
 
 import com.hotelreview.api.dto.HotelDto;
+import com.hotelreview.api.dto.HotelResponse;
 import com.hotelreview.api.exceptions.HotelNotFoundException;
 import com.hotelreview.api.models.Hotel;
 import com.hotelreview.api.repository.HotelRepository;
 import com.hotelreview.api.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,17 +39,28 @@ public class HotelServiceImpl implements HotelService {
         return hotelResponse;
     }
     @Override
-    public List<HotelDto> getAllHotel() {
-        List<Hotel> hotel = hotelRepository.findAll();
-        return hotel.stream().map(h -> mapToDto(h)).collect(Collectors.toList());
-    }
+    public HotelResponse getAllHotel(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Page<Hotel> hotels = hotelRepository.findAll(pageable);
+        List<Hotel> listOfHotel = hotels.getContent();
+        List<HotelDto> content = listOfHotel.stream().map(h -> mapToDto(h)).collect(Collectors.toList());
 
+
+        HotelResponse hotelResponse = new HotelResponse();
+        hotelResponse.setContent(content);
+        hotelResponse.setPageNo(hotels.getNumber());
+        hotelResponse.setPageSize(hotels.getSize());
+        hotelResponse.setTotalElements(hotels.getTotalElements());
+        hotelResponse.setTotalPages(hotels.getTotalPages());
+        hotelResponse.setLast(hotels.isLast());
+
+        return hotelResponse;
+    }
     @Override
     public HotelDto getById(@PathVariable int id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Hotel not found!"));
         return mapToDto(hotel);
     }
-
     @Override
     public HotelDto updateHotel(@RequestBody HotelDto hotelDto, @PathVariable int id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new HotelNotFoundException("Hotel not could not be updated"));
@@ -53,14 +68,12 @@ public class HotelServiceImpl implements HotelService {
         hotel.setCity(hotelDto.getCity());
         Hotel updatedHotel = hotelRepository.save(hotel);
         return mapToDto(updatedHotel);
-
     }
     @Override
     public void deleteById(int id) {
         HotelDto hotel = getById(id);
         hotelRepository.deleteById(id);
     }
-
     public HotelDto mapToDto(Hotel hotel) {
         HotelDto hotelDto = new HotelDto();
         hotelDto.setId(hotel.getId());

@@ -1,15 +1,12 @@
 package com.hotelreview.api.controller;
 
 import com.hotelreview.api.dto.HotelDto;
-import com.hotelreview.api.models.Hotel;
+import com.hotelreview.api.dto.HotelResponse;
 import com.hotelreview.api.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/")
@@ -20,8 +17,10 @@ public class HotelController {
         this.hotelService = hotelService;
     }
     @GetMapping("hotel")
-    public ResponseEntity <List<HotelDto>> getHotels() {
-        return new ResponseEntity<>(hotelService.getAllHotel(), HttpStatus.OK);
+    public ResponseEntity<HotelResponse> getHotels(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return new ResponseEntity<> (hotelService.getAllHotel(pageNo, pageSize), HttpStatus.OK);
     }
     @GetMapping("hotel/{id}")
     public ResponseEntity<HotelDto> hotelDetail(@PathVariable int id) {
