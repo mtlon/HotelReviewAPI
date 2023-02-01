@@ -9,5 +9,6 @@ public interface HotelService {
     List<HotelDto> getAllHotel();
     HotelDto getById(int id);
     HotelDto updateHotel(HotelDto hotelDto, int id);
+    void deleteById(int id);
 
 }

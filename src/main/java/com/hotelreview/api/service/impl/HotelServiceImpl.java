@@ -55,6 +55,11 @@ public class HotelServiceImpl implements HotelService {
         return mapToDto(updatedHotel);
 
     }
+    @Override
+    public void deleteById(int id) {
+        HotelDto hotel = getById(id);
+        hotelRepository.deleteById(id);
+    }
 
     public HotelDto mapToDto(Hotel hotel) {
         HotelDto hotelDto = new HotelDto();

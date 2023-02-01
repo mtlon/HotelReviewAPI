@@ -39,7 +39,7 @@ public class HotelController {
     }
     @DeleteMapping("hotel/{id}/delete")
     public ResponseEntity<String> deleteHotel(@PathVariable("id") int hotelId) {
-        System.out.println(hotelId);
-        return ResponseEntity.ok("Deleted successfully");
+        hotelService.deleteById(hotelId);
+        return new ResponseEntity<>("Deleted successful", HttpStatus.OK);
     }
 }
