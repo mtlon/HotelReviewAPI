@@ -45,7 +45,6 @@ public class HotelServiceImpl implements HotelService {
         List<Hotel> listOfHotel = hotels.getContent();
         List<HotelDto> content = listOfHotel.stream().map(h -> mapToDto(h)).collect(Collectors.toList());
 
-
         HotelResponse hotelResponse = new HotelResponse();
         hotelResponse.setContent(content);
         hotelResponse.setPageNo(hotels.getNumber());
