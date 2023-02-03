@@ -9,4 +9,5 @@ public interface ReviewService {
     List<ReviewDto> getReviewsByHotelId(int id);
     ReviewDto getReviewById(int reviewId, int hotelId);
     ReviewDto updateReview(ReviewDto reviewDto,int hotelId, int reviewId);
+    void deleteReview(int hotelId, int reviewId);
 }

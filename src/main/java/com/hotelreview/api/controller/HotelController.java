@@ -39,6 +39,6 @@ public class HotelController {
     @DeleteMapping("hotel/{id}/delete")
     public ResponseEntity<String> deleteHotel(@PathVariable("id") int hotelId) {
         hotelService.deleteById(hotelId);
-        return new ResponseEntity<>("Deleted successful", HttpStatus.OK);
+        return new ResponseEntity<>("Review deleted successfully", HttpStatus.OK);
     }
 }

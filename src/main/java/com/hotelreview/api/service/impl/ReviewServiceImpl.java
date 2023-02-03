@@ -1,6 +1,5 @@
 package com.hotelreview.api.service.impl;
 
-import com.hotelreview.api.dto.HotelDto;
 import com.hotelreview.api.dto.ReviewDto;
 import com.hotelreview.api.exceptions.HotelNotFoundException;
 import com.hotelreview.api.exceptions.ReviewNotFoundException;
@@ -48,7 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewDto getReviewById(int hotelId, int reviewId) {
         Hotel hotel = hotelRepository
                 .findById(hotelId)
-                .orElseThrow(() -> new HotelNotFoundException
+                .orElseThrow(()-> new HotelNotFoundException
                         ("Hotel with associated review not found"));
 
         Review review = reviewRepository
@@ -59,6 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
         if(review.getHotel().getId() != hotel.getId()) {
             throw new ReviewNotFoundException("This review does not belong to a hotel");
         }
+
         return mapToDto(review);
     }
 
@@ -82,6 +82,23 @@ public class ReviewServiceImpl implements ReviewService {
         Review updatedReview = reviewRepository.save(review);
 
         return mapToDto(review);
+    }
+
+    @Override
+    public void deleteReview(int hotelId, int reviewId) {
+        Hotel hotel = hotelRepository
+                .findById(hotelId)
+                .orElseThrow(()-> new HotelNotFoundException
+                        ("Hotel with associated review not found"));
+        Review review = reviewRepository
+                .findById(reviewId)
+                .orElseThrow(()-> new ReviewNotFoundException
+                        ("This review does not belong to a hotel"));
+        if(review.getHotel().getId() != hotel.getId()) {
+            throw new ReviewNotFoundException("This review does not belong to a hotel");
+        }
+
+        reviewRepository.delete(review);
     }
 
     private ReviewDto mapToDto(Review review) {
