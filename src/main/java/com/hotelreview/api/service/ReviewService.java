@@ -7,4 +7,5 @@ import java.util.List;
 public interface ReviewService {
     ReviewDto creteReview (int hotelId, ReviewDto reviewDto);
     List<ReviewDto> getReviewsByHotelId(int id);
+    ReviewDto getReviewById(int reviewId, int hotelId);
 }

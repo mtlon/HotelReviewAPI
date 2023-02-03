@@ -22,7 +22,11 @@ public class ReviewController {
     public List<ReviewDto> getReviewsByHotelId(@PathVariable("hotelId") int hotelId) {
         return reviewService.getReviewsByHotelId(hotelId);
     }
-
+    @GetMapping("hotel/{hotelId}/review/{id}")
+    public ResponseEntity<ReviewDto> getReviewById(@PathVariable ("hotelId") int hotelId, @PathVariable("id") int reviewId) {
+        ReviewDto reviewDto = reviewService.getReviewById(hotelId,reviewId);
+        return new ResponseEntity<>(reviewDto, HttpStatus.OK);
+    }
     @PostMapping("hotel/{hotelId}/review")
     public ResponseEntity<ReviewDto> createReview(@PathVariable("hotelId") int hotelId, @RequestBody ReviewDto reviewDto) {
         return new ResponseEntity<>(reviewService.creteReview(hotelId, reviewDto), HttpStatus.CREATED);
