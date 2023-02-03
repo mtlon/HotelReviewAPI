@@ -31,4 +31,12 @@ public class ReviewController {
     public ResponseEntity<ReviewDto> createReview(@PathVariable("hotelId") int hotelId, @RequestBody ReviewDto reviewDto) {
         return new ResponseEntity<>(reviewService.creteReview(hotelId, reviewDto), HttpStatus.CREATED);
     }
+    @PutMapping("hotel/{hotelId}/review/{id}/update")
+    public ResponseEntity<ReviewDto> updateReview (
+             @RequestBody ReviewDto reviewDto,
+             @PathVariable("hotelId") int hotelId,
+             @PathVariable("id") int id) {
+        ReviewDto updateReview = reviewService.updateReview(reviewDto,hotelId,id);
+        return new ResponseEntity<>(updateReview,HttpStatus.OK);
+    }
 }
