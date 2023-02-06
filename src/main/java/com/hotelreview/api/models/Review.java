@@ -18,6 +18,7 @@ public class Review {
     private String content;
     private int stars;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
