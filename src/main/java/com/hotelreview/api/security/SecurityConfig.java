@@ -24,13 +24,12 @@ public class SecurityConfig {
     public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET).authenticated()
+                .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -41,12 +40,12 @@ public class SecurityConfig {
     public UserDetailsService users() {
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("{noop}password")
+                .password("password")
                 .roles("ADMIN")
                 .build();
         UserDetails user = User.builder()
                 .username("user")
-                .password("{noop}password")
+                .password("password")
                 .roles("USER")
                 .build();
 
