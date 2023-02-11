@@ -42,7 +42,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User is taken", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("User signed success!", HttpStatus.OK);
     }
 
     @PostMapping("/register")
