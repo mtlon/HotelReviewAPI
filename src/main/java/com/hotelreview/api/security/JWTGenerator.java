@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static com.hotelreview.api.security.SecurityConstants.JWT_EXPIRATION;
-import static com.hotelreview.api.security.SecurityConstants.JWT_SECRET;
+import static com.hotelreview.api.security.SecurityConstants.*;
 
 @Component
 public class JWTGenerator {
-    public String generateToken(Authentication authentication) {
+    public String generateToke(Authentication authentication) {
         String username = authentication.getName();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION);
@@ -23,10 +22,11 @@ public class JWTGenerator {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512,JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
                 .compact();
         return token;
     }
+
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
@@ -34,11 +34,12 @@ public class JWTGenerator {
                 .getBody();
         return claims.getSubject();
     }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
             return true;
-        } catch (Exception exception) {
+        } catch (Exception ex) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
         }
     }
